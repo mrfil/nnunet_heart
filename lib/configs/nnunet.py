@@ -29,8 +29,7 @@ class NNUNet(TaskConfig):
         self.use_folds = tuple(
             int(f) for f in conf.get("use_folds", "0,1,2,3,4").split(",") if f.strip() != ""
         )
-        # For test
-        self.use_folds = (0, 1)
+
         # Optional metadata for logs / UI
         self.model_config = conf.get("nnunet_config", "3d_fullres")
 
