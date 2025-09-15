@@ -1,5 +1,4 @@
-import logging
-import os
+import os, logging
 from typing import Any, Dict, Optional
 
 from monailabel.interfaces.config import TaskConfig
@@ -8,6 +7,7 @@ from monailabel.interfaces.tasks.scoring import ScoringMethod
 from monailabel.interfaces.tasks.strategy import Strategy
 from monailabel.interfaces.tasks.train import TrainTask
 from lib.infers.nnunet_segmentation import NNUNetSegmentation 
+from lib.trainers.nnunet_trainer import NNUNetTrainTask
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +29,7 @@ class NNUNet(TaskConfig):
         self.use_folds = tuple(
             int(f) for f in conf.get("use_folds", "0,1,2,3,4").split(",") if f.strip() != ""
         )
-
+        
         # Optional metadata for logs / UI
         self.model_config = conf.get("nnunet_config", "3d_fullres")
 
@@ -77,7 +77,7 @@ class NNUNet(TaskConfig):
 
     # Keep these as stubs (will implement in the future)
     def trainer(self) -> Optional[TrainTask]:
-        return None
+        return NNUNetTrainTask(conf=self.conf)
 
     def strategy(self) -> Optional[Strategy]:
         return None
